@@ -1,0 +1,89 @@
+﻿<Window x:Class="DataTemplates.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataTemplates"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="600"
+        Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <local:StatusToBrushConverter x:Key="StatusToBrushConverter" />
+        <DataTemplate x:Key="CustomerTemplate">
+            <Grid Margin="3">
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin"
+                                Value="3" />
+                        <Setter Property="FontSize"
+                                Value="18" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Height="Auto"
+                                Width="Auto"
+                                Orientation="Horizontal">
+                        <TextBlock x:Name="FirstNameText"
+                                   Text="{Binding FirstName}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock x:Name="LastNameText"
+                                   Text="{Binding LastName}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                    <TextBlock x:Name="PhoneText"
+                               Text="{Binding Phone}"
+                               Grid.Row="1"
+                               TextWrapping="Wrap" />
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="AgeText"
+                                   Text="{Binding Age}"
+                                   HorizontalAlignment="Left"
+                                   Margin="10,21,0,0"
+                                   TextWrapping="Wrap"
+                                   VerticalAlignment="Top" />
+                        <Image x:Name="IsActiveImage"
+                               Visibility="{Binding IsActive, Converter={StaticResource BoolToVisConverter}}"
+                               Grid.Column="1"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Source="Resources/Check.png"
+                               Width="32" />
+                    </Grid>
+                </Grid>
+                <Ellipse Grid.Column="1"
+                         Fill="{Binding StatusId, Converter={StaticResource StatusToBrushConverter}}"
+                         Stroke="Black"
+                         Width="75"
+                         Height="75"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="139*" />
+            <ColumnDefinition Width="258*" />
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="listBox"
+                 ItemsSource="{Binding Customers}"
+                 ItemTemplate="{DynamicResource CustomerTemplate}"
+                 HorizontalContentAlignment="Stretch"/>
+    </Grid>
+</Window>
